@@ -142,8 +142,27 @@
             <param name="ConversionPattern" value="%date [%thread] %-5level %logger.%method - %message%newline" />
         </layout>
     </appender>
-    <appender name="HttpServingUsingJson" type="HttpServingUsingJson">
-        <source appender-name="" appender-type="Sqlite3DbLogger" />
 
-    </appender>
+    <broadcasting name="HttpServingUsingJson" type="HttpServingUsingJson">
+        <source appender-name="" appender-type="Sqlite3DbLogger" />
+        <serve on="localhost" port="4325" additional-suffix="/logging/remote" is-auth="true" is-https="false">
+            <auth>
+                <role name="admin" priority="0">
+                    <user  name="" is-changed="true" hash-pass-after-single-run="true" pass="onetime-pass">
+                    </user>
+                </role>
+            </auth>
+        </serve>
+    </broadcasting>
+
+    <config-mutator>
+        <serve on="localhost" port="4326" additional-suffix="/logging/configure" is-auth="true" is-https="false">
+            <auth>
+                <role name="admin" priority="0">
+                    <user  name="" is-changed="true" hash-pass-after-single-run="true" pass="onetime-pass">
+                    </user>
+                </role>
+            </auth>
+        </serve>
+    </config-mutator>
 </log4go>
