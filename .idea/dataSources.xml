@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
+    <data-source source="LOCAL" name="log4go-db" uuid="6958f677-9982-4052-bf1d-ab9f07f8bfca">
+      <driver-ref>sqlite.xerial</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
+      <jdbc-url>jdbc:sqlite:D:\github\log4-go-with-elmah\configs\log4go-db.db</jdbc-url>
+    </data-source>
+  </component>
+</project>
