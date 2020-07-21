@@ -1,165 +1,219 @@
 <log4go>
     <root>
-        <level value="ALL" />
-        <appender-ref ref="ColorConsoleAppender" />
-        <appender-ref ref="InfoFileAppender" />
-        <appender-ref ref="DebugFileAppender" />
-        <appender-ref ref="WarningFileAppender" />
-        <appender-ref ref="ErrorFileAppender" />
-        <appender-ref ref="FatalFileAppender" />
-        <appender-ref ref="DiagnosticFileAppender" />
+        <level value="ALL"/>
+        <appender-ref ref="ColorConsoleAppender"/>
+        <appender-ref ref="InfoFileAppender"/>
+        <appender-ref ref="DebugFileAppender"/>
+        <appender-ref ref="WarningFileAppender"/>
+        <appender-ref ref="ErrorFileAppender"/>
+        <appender-ref ref="FatalFileAppender"/>
+        <appender-ref ref="DiagnosticFileAppender"/>
+        <appender-ref ref="Sqlite3Db"/>
+        <broad-casting-appender ref="HttpServingUsingJson"/>
+        <system mode="develop" is-enable-json-error="false"/>
+        <variable-creator>
+            <variable name="logs-root-path" value="."/>
+            <variable name="logs-path" value="%logs-root-path%/logs"/>
+            <variable name="common-logging-pattern" value="%common-logging-pattern%"/>
+        </variable-creator>
+        <clear-config-appender name="clear-on-develop" />
     </root>
+    <clear-config name="clear-on-develop" enables-on-system-mode="develop">
+        <run index="1"/>
+        <total-run number=""/>
+        <on-next-run is-clear=""/>
+        <on-every-third-run is-clear=""/>
+    </clear-config>
     <appender name="ColorConsoleAppender" type="ColoredConsoleAppender">
         <mapping>
-            <level value="ERROR" />
-            <foreColor value="White" />
-            <backColor value="Red" />
+            <level value="ERROR"/>
+            <foreColor value="White"/>
+            <backColor value="Red"/>
         </mapping>
         <mapping>
-            <level value="DEBUG" />
-            <backColor value="Yellow" />
+            <level value="DEBUG"/>
+            <backColor value="Yellow"/>
         </mapping>
         <mapping>
-            <level value="INFO" />
-            <foreColor value="White" />
+            <level value="INFO"/>
+            <foreColor value="White"/>
         </mapping>
         <mapping>
-            <level value="WARN" />
-            <foreColor value="White" />
-            <backColor value="Purple" />
+            <level value="WARN"/>
+            <foreColor value="White"/>
+            <backColor value="Purple"/>
         </mapping>
         <layout type="PatternLayout">
-            <conversionPattern value="%date %level %logger - %message%newline" />
+            <conversionPattern value="%date %level %logger - %message%newline"/>
+        </layout>
+    </appender>
+    <appender name="DateTimeInfoFileAppender" type="DateTimeSizeRollingFileAppender">
+        <file value="%logs-path%/%i3% . dated-%week%-%month%-%year%.logs"/>
+        <appendToFile value="true"/>
+        <rollingStyle value="Weekly"/>
+        <maxSizeRollBackups value="5"/>
+        <maximumFileSize value="40MB"/>
+        <filter type="LevelMatchFilter">
+            <acceptOnMatch value="true"/>
+            <levelToMatch value="INFO"/>
+        </filter>
+        <staticLogFileName value="false"/>
+        <layout type="PatternLayout">
+            <param name="ConversionPattern" value="%common-logging-pattern%"/>
         </layout>
     </appender>
     <appender name="InfoFileAppender" type="RollingFileAppender">
-        <file value="logs\info.logs" />
-        <appendToFile value="true" />
-        <rollingStyle value="Size" />
-        <maxSizeRollBackups value="10" />
-        <maximumFileSize value="40MB" />
+        <file value="%logs-path%/info.logs"/>
+        <appendToFile value="true"/>
+        <rollingStyle value="Size"/>
+        <maxSizeRollBackups value="10"/>
+        <maximumFileSize value="40MB"/>
         <filter type="LevelMatchFilter">
-            <acceptOnMatch value="true" />
-            <levelToMatch value="INFO" />
+            <acceptOnMatch value="true"/>
+            <levelToMatch value="INFO"/>
         </filter>
-        <filter type="log4go.Filter.DenyAllFilter" />
-        <staticLogFileName value="false" />
+        <filter type="log4go.Filter.DenyAllFilter"/>
+        <staticLogFileName value="false"/>
         <layout type="PatternLayout">
-            <param name="ConversionPattern" value="%date [%thread] %-5level %logger.%method - %message%newline" />
+            <param name="ConversionPattern" value="%common-logging-pattern%"/>
         </layout>
     </appender>
     <appender name="DebugFileAppender" type="RollingFileAppender">
-        <file value="logs\debug.logs" />
-        <appendToFile value="true" />
-        <rollingStyle value="Size" />
-        <maxSizeRollBackups value="10" />
-        <maximumFileSize value="40MB" />
+        <file value="%logs-path%/debug.logs"/>
+        <appendToFile value="true"/>
+        <rollingStyle value="Size"/>
+        <maxSizeRollBackups value="10"/>
+        <maximumFileSize value="40MB"/>
         <filter type="LevelMatchFilter">
-            <acceptOnMatch value="true" />
-            <levelToMatch value="DEBUG" />
+            <acceptOnMatch value="true"/>
+            <levelToMatch value="DEBUG"/>
         </filter>
-        <filter type="log4go.Filter.DenyAllFilter" />
-        <staticLogFileName value="false" />
+        <filter type="log4go.Filter.DenyAllFilter"/>
+        <staticLogFileName value="false"/>
         <layout type="PatternLayout">
-            <param name="ConversionPattern" value="%date [%thread] %-5level %logger.%method - %message%newline" />
+            <param name="ConversionPattern" value="%common-logging-pattern%"/>
         </layout>
     </appender>
     <appender name="WarningFileAppender" type="RollingFileAppender">
-        <file value="logs\warning.logs" />
-        <appendToFile value="true" />
-        <rollingStyle value="Size" />
-        <maxSizeRollBackups value="10" />
-        <maximumFileSize value="40MB" />
+        <file value="%logs-path%/warning.logs"/>
+        <appendToFile value="true"/>
+        <rollingStyle value="Size"/>
+        <maxSizeRollBackups value="10"/>
+        <maximumFileSize value="40MB"/>
         <filter type="LevelMatchFilter">
-            <acceptOnMatch value="true" />
-            <levelToMatch value="WARN" />
+            <acceptOnMatch value="true"/>
+            <levelToMatch value="WARN"/>
         </filter>
-        <filter type="log4go.Filter.DenyAllFilter" />
-        <staticLogFileName value="false" />
+        <filter type="log4go.Filter.DenyAllFilter"/>
+        <staticLogFileName value="false"/>
         <layout type="PatternLayout">
-            <param name="ConversionPattern" value="%date [%thread] %-5level %logger.%method - %message%newline" />
+            <param name="ConversionPattern" value="%common-logging-pattern%"/>
         </layout>
     </appender>
     <appender name="ErrorFileAppender" type="RollingFileAppender">
-        <file value="logs\all.errors.warning.fatal.logs" />
-        <appendToFile value="true" />
-        <rollingStyle value="Size" />
-        <maxSizeRollBackups value="10" />
-        <maximumFileSize value="40MB" />
+        <file value="%logs-path%/all.errors.warning.fatal.logs"/>
+        <appendToFile value="true"/>
+        <rollingStyle value="Size"/>
+        <maxSizeRollBackups value="10"/>
+        <maximumFileSize value="40MB"/>
         <filter type="LevelMatchFilter">
-            <acceptOnMatch value="true" />
-            <levelToMatch value="ERROR" />
+            <acceptOnMatch value="true"/>
+            <levelToMatch value="ERROR"/>
         </filter>
         <filter type="LevelMatchFilter">
-            <acceptOnMatch value="true" />
-            <levelToMatch value="FATAL" />
+            <acceptOnMatch value="true"/>
+            <levelToMatch value="FATAL"/>
         </filter>
         <filter type="LevelMatchFilter">
-            <acceptOnMatch value="true" />
-            <levelToMatch value="WARN" />
+            <acceptOnMatch value="true"/>
+            <levelToMatch value="WARN"/>
         </filter>
-        <filter type="log4go.Filter.DenyAllFilter" />
-        <staticLogFileName value="false" />
+        <filter type="log4go.Filter.DenyAllFilter"/>
+        <staticLogFileName value="false"/>
         <layout type="PatternLayout">
-            <param name="ConversionPattern" value="%date [%thread] %-5level %logger.%method - %message%newline" />
+            <param name="ConversionPattern" value="%common-logging-pattern%"/>
         </layout>
     </appender>
     <appender name="FatalFileAppender" type="RollingFileAppender">
-        <file value="logs\fatal.logs" />
-        <appendToFile value="true" />
-        <rollingStyle value="Size" />
-        <maxSizeRollBackups value="10" />
-        <maximumFileSize value="40MB" />
+        <file value="%logs-path%/fatal.logs"/>
+        <appendToFile value="true"/>
+        <rollingStyle value="Size"/>
+        <maxSizeRollBackups value="10"/>
+        <maximumFileSize value="40MB"/>
         <filter type="LevelMatchFilter">
-            <acceptOnMatch value="true" />
-            <levelToMatch value="FATAL" />
+            <acceptOnMatch value="true"/>
+            <levelToMatch value="FATAL"/>
         </filter>
-        <filter type="log4go.Filter.DenyAllFilter" />
-        <staticLogFileName value="false" />
+        <filter type="log4go.Filter.DenyAllFilter"/>
+        <staticLogFileName value="false"/>
         <layout type="PatternLayout">
-            <param name="ConversionPattern" value="%date [%thread] %-5level %logger.%method - %message%newline" />
+            <param name="ConversionPattern" value="%common-logging-pattern%"/>
         </layout>
     </appender>
     <appender name="DiagnosticFileAppender" type="RollingFileAppender">
-        <file value="logs\diagnostic.all.logs" />
-        <appendToFile value="true" />
-        <rollingStyle value="Size" />
-        <maxSizeRollBackups value="2" />
-        <maximumFileSize value="10MB" />
-        <staticLogFileName value="false" />
+        <file value="%logs-path%/diagnostic.all.logs"/>
+        <appendToFile value="true"/>
+        <rollingStyle value="Size"/>
+        <maxSizeRollBackups value="2"/>
+        <maximumFileSize value="10MB"/>
+        <staticLogFileName value="false"/>
         <layout type="PatternLayout">
-            <param name="ConversionPattern" value="%date [%thread] %-5level %logger.%method - %message%newline" />
+            <param name="ConversionPattern" value="%common-logging-pattern%"/>
         </layout>
     </appender>
     <appender name="Sqlite3Db" type="Sqlite3DbLogger">
-        <file value="logs\sqlitedb.logs.db" />
-        <appendToFile value="false" />
-        <rollingStyle value="Size" />
-        <maxSizeRollBackups value="2" />
-        <maximumFileSize value="10MB" />
-        <staticLogFileName value="false" />
+        <file value="%logs-path%/sqlitedb.logs.db"/>
+        <archive-file name="%logs-path%/sqlite3-arc/%i3% . sqlitedb.logs.db"/>
+        <appendToFile value="false"/>
+        <rollingStyle value="Size"/>
+        <maxSizeRollBackups value="2"/>
+        <maximumFileSize value="10MB"/>
+        <staticLogFileName value="false"/>
         <layout type="PatternLayout">
-            <param name="ConversionPattern" value="%date [%thread] %-5level %logger.%method - %message%newline" />
+            <param name="ConversionPattern" value="%common-logging-pattern%"/>
         </layout>
     </appender>
 
+    <auth name="basic">
+        <role name="admin" priority="0">
+            <user name="admin1" is-changed="true" hash-pass-after-single-run="true" pass="@*onetime-pass53">
+            </user>
+            <user name="admin2" is-changed="true" hash-pass-after-single-run="true" pass="@*onetime-pass75">
+            </user>
+        </role>
+        <role name="developer" priority="0">
+            <user name="developer1" is-changed="true" hash-pass-after-single-run="true" pass="@*onetime-pass53">
+            </user>
+            <user name="developer2" is-changed="true" hash-pass-after-single-run="true" pass="@*onetime-pass75">
+            </user>
+        </role>
+    </auth>
+    <email-config name="gmail1">
+
+    </email-config>
+
+    <trigger-service
+            name="email-phone"
+            email-config="gmail1"
+            phone-config=""
+            trigger-on="weekly"
+            />
+
     <broadcasting name="HttpServingUsingJson" type="HttpServingUsingJson">
-        <source appender-name="" appender-type="Sqlite3DbLogger" />
+        <source appender-name="Sqlite3Db" appender-type="Sqlite3DbLogger"/>
         <serve on="localhost" port="4325" additional-suffix="/logging/remote" is-auth="true" is-https="false">
-            <auth>
-                <role name="admin" priority="0">
-                    <user  name="" is-changed="true" hash-pass-after-single-run="true" pass="onetime-pass">
-                    </user>
-                </role>
-            </auth>
+            <auth-use name="basic"/>
         </serve>
+        <trigger name="email-phone"/>
     </broadcasting>
 
     <config-mutator>
         <serve on="localhost" port="4326" additional-suffix="/logging/configure" is-auth="true" is-https="false">
             <auth>
                 <role name="admin" priority="0">
-                    <user  name="" is-changed="true" hash-pass-after-single-run="true" pass="onetime-pass">
+                    <user name="admin1" is-changed="true" hash-pass-after-single-run="true" pass="@*onetime-pass53">
+                    </user>
+                    <user name="admin2" is-changed="true" hash-pass-after-single-run="true" pass="@*onetime-pass75">
                     </user>
                 </role>
             </auth>
